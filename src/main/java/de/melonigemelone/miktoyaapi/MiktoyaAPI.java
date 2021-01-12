@@ -1,44 +1,69 @@
 package de.melonigemelone.miktoyaapi;
 
-import de.melonigemelone.miktoyaapi.api.languagesystem.Language;
+import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsMySQL;
+import de.melonigemelone.miktoyaapi.api.coinssysteme.economy.EconomyMySQL;
+import de.melonigemelone.miktoyaapi.api.coinssysteme.rtx.RBXMySQL;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemEnglischConfigHandler;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemGermanConfigHandler;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemAPI;
 import de.melonigemelone.miktoyaapi.api.playerdata.PlayerDataMySQL;
+import de.melonigemelone.miktoyaapi.api.vault.groups.GroupConfigHandler;
 import de.melonigemelone.miktoyaapi.bungeecommunication.BungeeCommunicationHandler;
 import de.melonigemelone.miktoyaapi.bungeecommunication.BungeeCommunicationListener;
 import de.melonigemelone.miktoyaapi.mysql.MySQLConfigHandler;
 import de.melonigemelone.miktoyaapi.tcpexploitfixer.TCPExploitFixer;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MiktoyaAPI extends JavaPlugin {
 
-    public static MiktoyaAPI intsance;
+    public static MiktoyaAPI instance;
 
+    //BungeeCommunication
     public static BungeeCommunicationHandler bungeeCommunicationHandler;
 
+    //Vault
+    public static Permission permission;
+    public static Economy economy;
+
+    //MySQL-Values
     public static MySQLConfigHandler mySQLConfigHandler;
 
+    //MySQL-Manager
     public static PlayerDataMySQL playerDataMySQL;
+    public static CoinsMySQL coinsMySQL;
+    public static EconomyMySQL economyMySQL;
+    public static RBXMySQL rbxMySQL;
 
+    //Manager
     public static LanguageSystemGermanConfigHandler languageSystemGermanConfigHandler;
     public static LanguageSystemEnglischConfigHandler languageSystemEnglischConfigHandler;
+    public static GroupConfigHandler groupConfigHandler;
 
     @Override
     public void onEnable() {
 
-        intsance = this;
+        instance = this;
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Miktoya");
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "Miktoya", new BungeeCommunicationListener());
 
         bungeeCommunicationHandler = new BungeeCommunicationHandler();
 
+        setupEconomy();
+        setupPermissions();
+
         mySQLConfigHandler = new MySQLConfigHandler();
 
         playerDataMySQL = new PlayerDataMySQL();
+        coinsMySQL = new CoinsMySQL();
+        economyMySQL = new EconomyMySQL();
+        rbxMySQL = new RBXMySQL();
 
         languageSystemGermanConfigHandler = new LanguageSystemGermanConfigHandler();
         languageSystemEnglischConfigHandler = new LanguageSystemEnglischConfigHandler();
+        groupConfigHandler = new GroupConfigHandler();
 
         initCommands();
         initListener();
@@ -71,13 +96,28 @@ public class MiktoyaAPI extends JavaPlugin {
 
     }
 
+    private void setupEconomy() {
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        economy = rsp.getProvider();
+    }
 
-    public static MiktoyaAPI getIntsance() {
-        return intsance;
+    private void setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        permission = rsp.getProvider();
+    }
+
+
+
+    public static MiktoyaAPI getInstance() {
+        return instance;
     }
 
     public static BungeeCommunicationHandler getBungeeCommunicationHandler() {
         return bungeeCommunicationHandler;
+    }
+
+    public static Permission getPermission() {
+        return permission;
     }
 
     public static MySQLConfigHandler getMySQLConfigHandler() {
@@ -86,6 +126,18 @@ public class MiktoyaAPI extends JavaPlugin {
 
     public static PlayerDataMySQL getPlayerDataMySQL() {
         return playerDataMySQL;
+    }
+
+    public static CoinsMySQL getCoinsMySQL() {
+        return coinsMySQL;
+    }
+
+    public static RBXMySQL getRbxMySQL() {
+        return rbxMySQL;
+    }
+
+    public static EconomyMySQL getEconomyMySQL() {
+        return economyMySQL;
     }
 
     public static LanguageSystemGermanConfigHandler getLanguageSystemGermanConfigHandler() {

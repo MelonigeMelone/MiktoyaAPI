@@ -8,7 +8,7 @@ import de.melonigemelone.miktoyaapi.lib.configuration.yaml.YamlFileBuilder;
 public class MySQLConfigHandler extends YamlFileBuilder {
 
     public MySQLConfigHandler() {
-        super(MiktoyaAPI.getIntsance().getDataFolder().getPath(), "mysql.yml");
+        super(MiktoyaAPI.getInstance().getDataFolder().getPath(), "mysql.yml");
         load();
     }
 

@@ -236,7 +236,7 @@ public class MySQL {
                 runnable.run();
             }
         };
-        r.runTaskAsynchronously(MiktoyaAPI.getIntsance());
+        r.runTaskAsynchronously(MiktoyaAPI.getInstance());
     }
 
 

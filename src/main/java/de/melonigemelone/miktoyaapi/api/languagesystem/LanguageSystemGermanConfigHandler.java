@@ -14,7 +14,7 @@ import de.melonigemelone.miktoyaapi.lib.configuration.yaml.YamlFileBuilder;
 public class LanguageSystemGermanConfigHandler extends YamlFileBuilder {
 
     public LanguageSystemGermanConfigHandler() {
-        super(MiktoyaAPI.getIntsance().getDataFolder() + "/Messages", "messageFileGerman.yml");
+        super(MiktoyaAPI.getInstance().getDataFolder() + "/Messages", "messageFileGerman.yml");
 
         save();
     }
