@@ -43,12 +43,19 @@ public class PlayerDataMySQL extends MySQL {
                 });
     }
 
+    //Update PlayerData Entry
+    public void updateVanish(PlayerData playerData) {
+        update("playerdata",
+                "vanish = " + playerData.isVanish(),
+                "uuid = '" + playerData.getUuid() + "'");
+    }
+
     //Load PlayerData From DataBase with only the UUID
     public void getDataFromUUID(String uuid, Callback<PlayerData> callback) {
 
         get("playerdata",
                 "uuid = '" + uuid + "'",
-                new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "name", "ip", "firstJoin", "currentServerName"}, result -> {
+                new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "name", "ip", "firstJoin", "currentServerName", "vanish"}, result -> {
                     PlayerData playerData = new PlayerData(uuid, "");
 
                     playerData.setLanguage(Language.valueOf(result.get(0).toString()));
@@ -60,6 +67,7 @@ public class PlayerDataMySQL extends MySQL {
                     playerData.setIp(result.get(6).toString());
                     playerData.setFirstJoin(Long.parseLong(result.get(7).toString()));
                     playerData.setCurrentServerName(result.get(8).toString());
+                    playerData.setVanish(Boolean.parseBoolean(result.get(9).toString()));
 
                     callback.taskDone(playerData);
                 });
@@ -70,7 +78,7 @@ public class PlayerDataMySQL extends MySQL {
     public void getDataFromName(String name, Callback<PlayerData> callback) {
         get("playerdata",
                 "name = '" + name + "'",
-                new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "uuid", "ip", "firstJoin", "currentServerName"}, result -> {
+                new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "uuid", "ip", "firstJoin", "currentServerName", "vanish"}, result -> {
                     PlayerData playerData = new PlayerData("", name);
                     playerData.setLanguage(Language.valueOf(result.get(0).toString()));
                     playerData.setCurrentlyOnline(Boolean.parseBoolean(result.get(1).toString()));
@@ -81,6 +89,7 @@ public class PlayerDataMySQL extends MySQL {
                     playerData.setIp(result.get(6).toString());
                     playerData.setFirstJoin(Long.parseLong(result.get(7).toString()));
                     playerData.setCurrentServerName(result.get(8).toString());
+                    playerData.setVanish(Boolean.parseBoolean(result.get(9).toString()));
 
                     callback.taskDone(playerData);
                 } );

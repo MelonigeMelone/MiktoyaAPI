@@ -12,6 +12,7 @@ public class PlayerData {
     private String currentServerName;
 
     private Language language;
+    private boolean vanish;
 
     private boolean currentlyOnline;
     private long firstJoin;
@@ -102,5 +103,14 @@ public class PlayerData {
 
     public String getCurrentServerName() {
         return currentServerName;
+    }
+
+    public void setVanish(boolean vanish) {
+        this.vanish = vanish;
+        MiktoyaAPI.getPlayerDataMySQL().updateVanish(this);
+    }
+
+    public boolean isVanish() {
+        return vanish;
     }
 }
