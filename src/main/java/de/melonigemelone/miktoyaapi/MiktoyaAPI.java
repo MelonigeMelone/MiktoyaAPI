@@ -1,8 +1,9 @@
 package de.melonigemelone.miktoyaapi;
 
 import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsMySQL;
+import de.melonigemelone.miktoyaapi.api.coinssysteme.economy.EconomyImpl;
 import de.melonigemelone.miktoyaapi.api.coinssysteme.economy.EconomyMySQL;
-import de.melonigemelone.miktoyaapi.api.coinssysteme.rtx.RBXMySQL;
+import de.melonigemelone.miktoyaapi.api.coinssysteme.rbx.RBXMySQL;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemEnglischConfigHandler;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemGermanConfigHandler;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemAPI;
@@ -10,11 +11,13 @@ import de.melonigemelone.miktoyaapi.api.playerdata.PlayerDataMySQL;
 import de.melonigemelone.miktoyaapi.api.vault.groups.GroupConfigHandler;
 import de.melonigemelone.miktoyaapi.bungeecommunication.BungeeCommunicationHandler;
 import de.melonigemelone.miktoyaapi.bungeecommunication.BungeeCommunicationListener;
+import de.melonigemelone.miktoyaapi.lib.packets.VersionChecker;
 import de.melonigemelone.miktoyaapi.mysql.MySQLConfigHandler;
 import de.melonigemelone.miktoyaapi.tcpexploitfixer.TCPExploitFixer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MiktoyaAPI extends JavaPlugin {
@@ -23,6 +26,8 @@ public class MiktoyaAPI extends JavaPlugin {
 
     //BungeeCommunication
     public static BungeeCommunicationHandler bungeeCommunicationHandler;
+
+    public static VersionChecker versionChecker;
 
     //Vault
     public static Permission permission;
@@ -50,6 +55,10 @@ public class MiktoyaAPI extends JavaPlugin {
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "Miktoya", new BungeeCommunicationListener());
 
         bungeeCommunicationHandler = new BungeeCommunicationHandler();
+
+        versionChecker = new VersionChecker();
+
+        System.out.println("Minecraft Server Version " + VersionChecker.bukkitVersion.name() + " erkannt!");
 
         setupEconomy();
         setupPermissions();
@@ -97,16 +106,14 @@ public class MiktoyaAPI extends JavaPlugin {
     }
 
     private void setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        economy = rsp.getProvider();
+        economy = new EconomyImpl();
+        getServer().getServicesManager().register(net.milkbowl.vault.economy.Economy.class,economy,this, ServicePriority.High);
     }
 
     private void setupPermissions() {
         RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
         permission = rsp.getProvider();
     }
-
-
 
     public static MiktoyaAPI getInstance() {
         return instance;

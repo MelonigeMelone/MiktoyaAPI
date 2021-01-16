@@ -1,4 +1,4 @@
-package de.melonigemelone.miktoyaapi.api.coinssysteme.rtx;
+package de.melonigemelone.miktoyaapi.api.coinssysteme.rbx;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
 

@@ -1,5 +1,6 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.coins;
 
+import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
 import de.melonigemelone.miktoyaapi.lib.database.mysql.MySQL;
 import de.melonigemelone.miktoyaapi.mysql.MySQLValues;
 
@@ -20,9 +21,9 @@ public class CoinsMySQL extends MySQL {
     }
 
     //Check if Player exists in DB
-    public boolean existsPlayer(String uuid) {
-        return existsData("coins",
-                "uuid  = '" + uuid + "'");
+    public void existsPlayer(String uuid, Callback<Boolean> callback) {
+        existsData("coins",
+                "uuid  = '" + uuid + "'", callback);
 
     }
 
@@ -43,15 +44,15 @@ public class CoinsMySQL extends MySQL {
     }
 
     //Get CoinsData
-    public CoinsData get(String uuid) {
-
-        List<Object> results = get("coins",
+    public void get(String uuid, Callback<CoinsData> callback) {
+        get("coins",
                 "uuid = '" + uuid + "'",
-                new String[]{"coins"});
+                new String[]{"coins"}, result -> {
 
-        double coins = Double.parseDouble(results.get(0).toString());
+                    double coins = Double.parseDouble(result.get(0).toString());
 
-        return new CoinsData(uuid, coins);
+                    callback.taskDone(new CoinsData(uuid, coins));
+                });
     }
 
 

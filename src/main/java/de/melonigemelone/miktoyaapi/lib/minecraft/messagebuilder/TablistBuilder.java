@@ -21,6 +21,7 @@ public class TablistBuilder {
                 v1_8.sendTablist(p, this.header, this.footer);
                 break;
             case v1_16:
+                p.setPlayerListHeaderFooter(this.header, this.footer);
                 break;
         }
         return this;

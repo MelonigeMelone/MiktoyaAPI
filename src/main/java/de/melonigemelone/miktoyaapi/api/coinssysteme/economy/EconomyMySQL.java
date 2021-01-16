@@ -1,6 +1,7 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.economy;
 
 import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsData;
+import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
 import de.melonigemelone.miktoyaapi.lib.database.mysql.MySQL;
 import de.melonigemelone.miktoyaapi.mysql.MySQLValues;
 
@@ -22,7 +23,7 @@ public class EconomyMySQL extends MySQL {
 
     //Check if Player exists in DB
     public boolean existsPlayer(String uuid) {
-        return existsData("economy",
+        return existsDataSync("economy",
                 "uuid  = '" + uuid + "'");
 
     }
@@ -46,12 +47,14 @@ public class EconomyMySQL extends MySQL {
     //Get CoinsData
     public EconomyData get(String uuid) {
 
-        List<Object> results = get("economy",
+        List<Object> result = getSync("economy",
                 "uuid = '" + uuid + "'",
                 new String[]{"money"});
 
-        double money = Double.parseDouble(results.get(0).toString());
+        double money = Double.parseDouble(result.get(0).toString());
 
         return new EconomyData(uuid, money);
+
+
     }
 }

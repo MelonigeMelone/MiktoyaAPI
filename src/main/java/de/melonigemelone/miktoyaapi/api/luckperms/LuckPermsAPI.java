@@ -10,6 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.time.temporal.TemporalAmount;
+import java.util.concurrent.TimeUnit;
+
 public class LuckPermsAPI {
 
     public static  RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
@@ -32,7 +35,15 @@ public class LuckPermsAPI {
     }
 
     public static boolean givePlayerPermissionGlobal(Player p, String permNode) {
-        PermissionNode node = PermissionNode.builder(permNode).build();
+        PermissionNode node = PermissionNode.builder(permNode)
+                .build();
+        return givePlayerPermission(p, node);
+    }
+
+    public static boolean givePlayerTempPermissionGlobal(Player p, String permNode, TimeUnit timeUnit, int duration) {
+        PermissionNode node = PermissionNode.builder(permNode)
+                .expiry(duration, timeUnit)
+                .build();
         return givePlayerPermission(p, node);
     }
 
@@ -43,10 +54,27 @@ public class LuckPermsAPI {
         return givePlayerPermission(p, node);
     }
 
+    public static boolean givePlayerTempPermissionOnSpecificServer(Player p, String permNode, String server, TimeUnit timeUnit, int duration) {
+        PermissionNode node = PermissionNode.builder(permNode)
+                .withContext(DefaultContextKeys.SERVER_KEY, server)
+                .expiry(duration, timeUnit)
+                .build();
+        return givePlayerPermission(p, node);
+    }
+
     public static boolean givePlayerPermissionOnSpecificServerAndWorld(Player p, String permNode, String server, String world) {
         PermissionNode node = PermissionNode.builder(permNode)
                 .withContext(DefaultContextKeys.SERVER_KEY, server)
                 .withContext(DefaultContextKeys.WORLD_KEY, world)
+                .build();
+        return givePlayerPermission(p, node);
+    }
+
+    public static boolean givePlayerTempPermissionOnSpecificServerAndWorld(Player p, String permNode, String server, String world, TimeUnit timeUnit, int duration) {
+        PermissionNode node = PermissionNode.builder(permNode)
+                .withContext(DefaultContextKeys.SERVER_KEY, server)
+                .withContext(DefaultContextKeys.WORLD_KEY, world)
+                .expiry(duration, timeUnit)
                 .build();
         return givePlayerPermission(p, node);
     }
@@ -66,7 +94,8 @@ public class LuckPermsAPI {
     }
 
     public static boolean removePermissionGlobal(Player p, String permNode) {
-        PermissionNode node = PermissionNode.builder(permNode).build();
+        PermissionNode node = PermissionNode.builder(permNode)
+                .build();
         return removePermission(p, node);
 
     }

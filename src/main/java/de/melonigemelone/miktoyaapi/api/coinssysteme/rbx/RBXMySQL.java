@@ -1,5 +1,6 @@
-package de.melonigemelone.miktoyaapi.api.coinssysteme.rtx;
+package de.melonigemelone.miktoyaapi.api.coinssysteme.rbx;
 
+import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
 import de.melonigemelone.miktoyaapi.lib.database.mysql.MySQL;
 import de.melonigemelone.miktoyaapi.mysql.MySQLValues;
 
@@ -20,9 +21,9 @@ public class RBXMySQL extends MySQL {
     }
 
     //Check if Player exists in DB
-    public boolean existsPlayer(String uuid) {
-        return existsData("rbx",
-                "uuid  = '" + uuid + "'");
+    public void existsPlayer(String uuid, Callback<Boolean> callback) {
+        existsData("rbx",
+                "uuid  = '" + uuid + "'", callback);
 
     }
 
@@ -43,14 +44,16 @@ public class RBXMySQL extends MySQL {
     }
 
     //Get CoinsData
-    public RBXData get(String uuid) {
+    public void get(String uuid, Callback<RBXData> callback) {
 
-        List<Object> results = get("rrbxtx",
+        get("rrbxtx",
                 "uuid = '" + uuid + "'",
-                new String[]{"rbx"});
+                new String[]{"rbx"}, result -> {
 
-        double rbx = Double.parseDouble(results.get(0).toString());
+                    double rbx = Double.parseDouble(result.get(0).toString());
 
-        return new RBXData(uuid, rbx);
+                    callback.taskDone(new RBXData(uuid, rbx));
+                });
+
     }
 }

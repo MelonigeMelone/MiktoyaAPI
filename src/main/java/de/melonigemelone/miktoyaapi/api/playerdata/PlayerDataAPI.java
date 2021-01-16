@@ -2,6 +2,7 @@ package de.melonigemelone.miktoyaapi.api.playerdata;
 
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
+import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
 
 import java.util.HashMap;
 
@@ -11,26 +12,21 @@ public class PlayerDataAPI {
     private static HashMap<String, PlayerData> playerDataHashMapWithName = new HashMap<>();
 
 
-    //Gibt die PlayerData vom dem Spieler anhand der UUID zurück (wenn nicht lokal dann von der DB)
-    public static PlayerData getPlayerDataFromUUID(String uuid) {
-        PlayerDataMySQL playerDataMySQL = MiktoyaAPI.getPlayerDataMySQL();
+    public static PlayerData getPlayerDataFromUUIDFromOlinePlayers(String uuid) {
+        return playerDataHashMapWithUUID.get(uuid);
+    }
 
-        if(playerDataHashMapWithUUID.containsKey(uuid)) {
-            return playerDataHashMapWithUUID.get(uuid);
-        } else {
-            return playerDataMySQL.getDataFromUUID(uuid);
-        }
+    public static void getPlayerDataFromUUIDFromDatabase(String uuid, Callback<PlayerData> callback) {
+        MiktoyaAPI.getPlayerDataMySQL().getDataFromUUID(uuid, callback);
+    }
+
+    public static PlayerData getPlayerDataFromNameFromOnlinePlayers(String name) {
+        return playerDataHashMapWithName.get(name.toLowerCase());
     }
 
     //Gibt die PlayerData vom dem Spieler anhand von dem Namen zurück (wenn nicht lokal dann von der DB)
-    public static PlayerData getPlayerDataFromName(String name) {
-        PlayerDataMySQL playerDataMySQL = MiktoyaAPI.getPlayerDataMySQL();
-
-        if(playerDataHashMapWithName.containsKey(name.toLowerCase())) {
-            return playerDataHashMapWithName.get(name.toLowerCase());
-        } else {
-            return playerDataMySQL.getDataFromName(name);
-        }
+    public static void getPlayerDataFromNameFromDataBase(String name, Callback<PlayerData> callback) {
+        MiktoyaAPI.getPlayerDataMySQL().getDataFromName(name, callback);
     }
 
     //Überprüft ob der Spieler mit der UUID online ist

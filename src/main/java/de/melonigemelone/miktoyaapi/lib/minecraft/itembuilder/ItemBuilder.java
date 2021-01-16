@@ -1,5 +1,6 @@
 package de.melonigemelone.miktoyaapi.lib.minecraft.itembuilder;
 
+import de.melonigemelone.miktoyaapi.lib.packets.VersionChecker;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -103,7 +104,14 @@ public class ItemBuilder {
 
     public ItemBuilder setUnbreakable(boolean unbreakable) {
         this.im = this.is.getItemMeta();
-        this.im.spigot().setUnbreakable(unbreakable);
+        switch (VersionChecker.getBukkitVersion()) {
+            case v1_8:
+                this.im.setUnbreakable(unbreakable);
+                break;
+            case v1_16:
+                this.im.setUnbreakable(unbreakable);
+                break;
+        }
         this.is.setItemMeta(this.im);
         return this;
     }

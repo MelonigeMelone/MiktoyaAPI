@@ -26,7 +26,7 @@ public class LanguageSystemAPI {
 
     //Gibt eine Nachricht zurück anhand der Sprache des Spielers
     public static String getMessage(String name, Player player, boolean replaceFarbCodes) {
-        return getMessage(name, PlayerDataAPI.getPlayerDataFromUUID(player.getUniqueId().toString()).getLanguage(), replaceFarbCodes);
+        return getMessage(name, PlayerDataAPI.getPlayerDataFromUUIDFromOlinePlayers(player.getUniqueId().toString()).getLanguage(), replaceFarbCodes);
     }
 
     //Gibt eine Nachricht zurück

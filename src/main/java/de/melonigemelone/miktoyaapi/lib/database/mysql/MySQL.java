@@ -2,6 +2,7 @@ package de.melonigemelone.miktoyaapi.lib.database.mysql;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
@@ -84,15 +85,15 @@ public class MySQL {
 
     //Creates Table if not exists
     public void createTableIfNotExists(String table, String columns) {
-        runAsync(() -> {
-            try {
-                Statement statement = connection.createStatement();
-                statement.execute("CREATE TABLE IF NOT EXISTS `" + table + "` (" + columns + ") ");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
+        try {
+            Statement statement = connection.createStatement();
+            statement.execute("CREATE TABLE IF NOT EXISTS `" + table + "` (" + columns + ") ");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
     }
+
 
     //Resets a Table
     public void resetTable(String table) {
@@ -120,8 +121,33 @@ public class MySQL {
                 e.printStackTrace();
             }
         });
-
     }
+
+    //Adds Data to a table
+    public void insertDataAndGetGeneratedKey(String table, String columns, String values, Callback<Integer> callback) {
+        runAsync(() -> {
+            try {
+                connectIfConnectionNotActive();
+                PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " + table + " (" + columns + ") VALUES (" + values + ")");
+                preparedStatement.executeUpdate();
+
+                int autoIncKeyFromFunc = -1;
+                Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT LAST_INSERT_ID()");
+
+                if (rs.next()) {
+                    autoIncKeyFromFunc = rs.getInt(1);
+                }
+
+                callback.taskDone(autoIncKeyFromFunc);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
 
     //Deletes Data From a table
     public void deleteDataFromTable(String table, String where) {
@@ -139,7 +165,27 @@ public class MySQL {
     }
 
     //Check if the Data exist in the table
-    public boolean existsData(String table, String where) {
+    public void existsData(String table, String where, Callback<Boolean> callback) {
+        runAsync(() -> {
+            boolean result = false;
+            try {
+                connectIfConnectionNotActive();
+                PreparedStatement st = connection.prepareStatement("SELECT * FROM " +  table + " WHERE " + where);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    result =  rs != null;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            callback.taskDone(result);
+        });
+    }
+
+    //Check if the Data exist in the table
+    public boolean existsDataSync(String table, String where) {
 
         try {
             connectIfConnectionNotActive();
@@ -159,7 +205,6 @@ public class MySQL {
 
     //Update Data in the table
     public void update(String table, String update, String where) {
-
         runAsync(() -> {
             try {
                 connectIfConnectionNotActive();
@@ -172,28 +217,64 @@ public class MySQL {
 
     }
 
-    //Get Data From the table
-    public Object get(String table, String where, String selected) {
-
-
-        try {
-            connectIfConnectionNotActive();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + table + " WHERE " + where);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-
-                return resultSet.getObject(selected);
-
+    //Update Data in the table
+    public void update(String table, String update) {
+        runAsync(() -> {
+            try {
+                connectIfConnectionNotActive();
+                PreparedStatement preparedStatement = connection.prepareStatement("UPDATE " + table + " SET " + update);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        });
 
-        return null;
+    }
+
+    //Get Data From the table
+    public void get(String table, String where, String selected, Callback<Object> callback) {
+        runAsync(() -> {
+            Object o = null;
+            try {
+                connectIfConnectionNotActive();
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + table + " WHERE " + where);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    o = resultSet.getObject(selected);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            callback.taskDone(o);
+        });
+
     }
 
     //Get a List of Columns from a tabel
-    public List<Object> get(String table, String where, String[] selected) {
+    public void get(String table, String where, String[] selected, Callback<List<Object>> callback) {
+        runAsync(() -> {
+            List<Object> objects = new ArrayList<>();
+
+            try {
+                connectIfConnectionNotActive();
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + table + " WHERE " + where);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    for (String s : selected) {
+                        objects.add(resultSet.getObject(s));
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            callback.taskDone(objects);
+
+        });
+    }
+
+    //Get a List of Columns from a tabel
+    public List<Object> getSync(String table, String where, String[] selected) {
         List<Object> objects = new ArrayList<>();
 
         try {
@@ -201,7 +282,7 @@ public class MySQL {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + table + " WHERE " + where);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                for(String s: selected) {
+                for (String s : selected) {
                     objects.add(resultSet.getObject(s));
                 }
             }
@@ -210,25 +291,28 @@ public class MySQL {
         }
 
         return objects;
+
+
     }
 
     //Get all from one Column
-    public List<Object> getDataInColumn(String table, String column) {
-        List<Object> objects = new ArrayList<>();
-
-        try {
-            connectIfConnectionNotActive();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT " + column +" FROM " + table);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                objects.add(resultSet.getObject(column));
+    public void getDataInColumn(String table, String column, Callback<List<Object>> callback) {
+        runAsync(() -> {
+            List<Object> objects = new ArrayList<>();
+            try {
+                connectIfConnectionNotActive();
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT " + column + " FROM " + table);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    objects.add(resultSet.getObject(column));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return objects;
+            callback.taskDone(objects);
+        });
     }
+
 
     private void runAsync(final Runnable runnable){
         BukkitRunnable r = new BukkitRunnable() {
@@ -238,6 +322,5 @@ public class MySQL {
         };
         r.runTaskAsynchronously(MiktoyaAPI.getInstance());
     }
-
 
 }

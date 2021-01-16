@@ -1,10 +1,11 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.coins;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
+import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
 
 public class CoinsAPI {
 
-    public static CoinsData getCoinsData(String uuid) {
-        return MiktoyaAPI.getCoinsMySQL().get(uuid);
+    public static void getCoinsData(String uuid, Callback<CoinsData> callback) {
+        MiktoyaAPI.getCoinsMySQL().get(uuid, callback);
     }
 }

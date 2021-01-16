@@ -43,6 +43,7 @@ public class TitleBuilder {
                 v1_8.sendTitle(p, this.title, this.titleFadeIn, this.titleStay, this.titleFadeOut, this.subtitle, this.subFadeIn, this.subStay, this.subFadeOut);
                 break;
             case v1_16:
+                p.sendTitle(this.title, this.subtitle, this.titleFadeIn, this.titleStay, this.titleFadeOut);
                 break;
         }
         return this;

@@ -8,6 +8,8 @@ public class PlayerData {
 
     private String uuid;
     private String name;
+    private String ip;
+    private String currentServerName;
 
     private Language language;
 
@@ -44,7 +46,6 @@ public class PlayerData {
 
     public void setLanguage(Language language) {
         this.language = language;
-        MiktoyaAPI.getPlayerDataMySQL().updateLanguage(this);
     }
 
     public boolean isCurrentlyOnline() {
@@ -87,4 +88,19 @@ public class PlayerData {
         this.onlineTime = onlineTime;
     }
 
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setCurrentServerName(String currentServerName) {
+        this.currentServerName = currentServerName;
+    }
+
+    public String getCurrentServerName() {
+        return currentServerName;
+    }
 }
