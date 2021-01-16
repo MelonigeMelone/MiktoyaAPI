@@ -17,8 +17,9 @@ public class RBXData {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public RBXData setUuid(String uuid) {
         this.uuid = uuid;
+        return this;
     }
 
     public double getRbx() {
@@ -29,22 +30,26 @@ public class RBXData {
         return this.rbx >= rbx;
     }
 
-    public void setRbx(double rbx) {
+    public RBXData setRbx(double rbx) {
         this.rbx = rbx;
         update();
+        return this;
     }
 
-    public void addRbx(double rbx) {
+    public RBXData addRbx(double rbx) {
         this.rbx = this.rbx + rbx;
         update();
+        return this;
     }
 
-    public void removeRbx(double rbx) {
+    public RBXData removeRbx(double rbx) {
         this.rbx = this.rbx - rbx;
         update();
+        return this;
     }
 
-    public void update() {
+    public RBXData update() {
         MiktoyaAPI.getRbxMySQL().update(this);
+        return this;
     }
 }

@@ -2,7 +2,7 @@ package de.melonigemelone.miktoyaapi.api.playerdata;
 
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
-import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
 
 import java.util.HashMap;
 

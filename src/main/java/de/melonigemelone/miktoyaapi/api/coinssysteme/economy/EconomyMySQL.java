@@ -1,9 +1,7 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.economy;
 
-import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsData;
-import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
-import de.melonigemelone.miktoyaapi.lib.database.mysql.MySQL;
-import de.melonigemelone.miktoyaapi.mysql.MySQLValues;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
+import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
 
 import java.util.List;
 

@@ -1,10 +1,8 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.coins;
 
-import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
-import de.melonigemelone.miktoyaapi.lib.database.mysql.MySQL;
-import de.melonigemelone.miktoyaapi.mysql.MySQLValues;
-
-import java.util.List;
+import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
 
 public class CoinsMySQL extends MySQL {
 

@@ -17,8 +17,9 @@ public class CoinsData {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public CoinsData setUuid(String uuid) {
         this.uuid = uuid;
+        return this;
     }
 
     public double getCoins() {
@@ -29,22 +30,26 @@ public class CoinsData {
       return this.coins >= coins;
     }
 
-    public void setCoins(double coins) {
+    public CoinsData setCoins(double coins) {
         this.coins = coins;
         update();
+        return this;
     }
 
-    public void addCoins(double coins) {
+    public CoinsData addCoins(double coins) {
         this.coins = this.coins + coins;
         update();
+        return this;
     }
 
-    public void removeCoins(double coins) {
+    public CoinsData removeCoins(double coins) {
         this.coins = this.coins - coins;
         update();
+        return this;
     }
 
-    public void update() {
+    public CoinsData update() {
         MiktoyaAPI.getCoinsMySQL().update(this);
+        return this;
     }
 }

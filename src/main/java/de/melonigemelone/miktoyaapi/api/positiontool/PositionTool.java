@@ -1,6 +1,6 @@
 package de.melonigemelone.miktoyaapi.api.positiontool;
 
-import de.melonigemelone.miktoyaapi.lib.minecraft.itembuilder.ItemBuilder;
+import de.melonigemelone.miktoyaapi.repository.lib.minecraft.itembuilder.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

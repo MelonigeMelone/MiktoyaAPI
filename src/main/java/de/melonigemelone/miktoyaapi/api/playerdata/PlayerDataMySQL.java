@@ -1,11 +1,9 @@
 package de.melonigemelone.miktoyaapi.api.playerdata;
 
 import de.melonigemelone.miktoyaapi.api.languagesystem.Language;
-import de.melonigemelone.miktoyaapi.lib.database.mysql.Callback;
-import de.melonigemelone.miktoyaapi.lib.database.mysql.MySQL;
-import de.melonigemelone.miktoyaapi.mysql.MySQLValues;
-
-import java.util.List;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
+import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
 
 public class PlayerDataMySQL extends MySQL {
 
@@ -56,20 +54,19 @@ public class PlayerDataMySQL extends MySQL {
         get("playerdata",
                 "uuid = '" + uuid + "'",
                 new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "name", "ip", "firstJoin", "currentServerName", "vanish"}, result -> {
-                    PlayerData playerData = new PlayerData(uuid, "");
+                    callback.taskDone(
 
-                    playerData.setLanguage(Language.valueOf(result.get(0).toString()));
-                    playerData.setCurrentlyOnline(Boolean.parseBoolean(result.get(1).toString()));
-                    playerData.setLastTimeJoined(Long.parseLong(result.get(2).toString()));
-                    playerData.setLastTimeOnline(Long.parseLong(result.get(3).toString()));
-                    playerData.setOnlineTime(Long.parseLong(result.get(4).toString()));
-                    playerData.setName(result.get(5).toString());
-                    playerData.setIp(result.get(6).toString());
-                    playerData.setFirstJoin(Long.parseLong(result.get(7).toString()));
-                    playerData.setCurrentServerName(result.get(8).toString());
-                    playerData.setVanish(Boolean.parseBoolean(result.get(9).toString()));
+                            new PlayerData(uuid, result.get(5).toString())
+                                    .setLanguage(Language.valueOf(result.get(0).toString()))
+                                    .setCurrentlyOnline(Boolean.parseBoolean(result.get(1).toString()))
+                                    .setLastTimeJoined(Long.parseLong(result.get(2).toString()))
+                                    .setLastTimeOnline(Long.parseLong(result.get(3).toString()))
+                                    .setOnlineTime(Long.parseLong(result.get(4).toString()))
+                                    .setIp(result.get(6).toString())
+                                    .setFirstJoin(Long.parseLong(result.get(7).toString()))
+                                    .setCurrentServerName(result.get(8).toString())
+                                    .setVanish(Boolean.parseBoolean(result.get(9).toString())));
 
-                    callback.taskDone(playerData);
                 });
 
     }
@@ -79,25 +76,20 @@ public class PlayerDataMySQL extends MySQL {
         get("playerdata",
                 "name = '" + name + "'",
                 new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "uuid", "ip", "firstJoin", "currentServerName", "vanish"}, result -> {
-                    PlayerData playerData = new PlayerData("", name);
-                    playerData.setLanguage(Language.valueOf(result.get(0).toString()));
-                    playerData.setCurrentlyOnline(Boolean.parseBoolean(result.get(1).toString()));
-                    playerData.setLastTimeJoined(Long.parseLong(result.get(2).toString()));
-                    playerData.setLastTimeOnline(Long.parseLong(result.get(3).toString()));
-                    playerData.setOnlineTime(Long.parseLong(result.get(4).toString()));
-                    playerData.setUuid(result.get(5).toString());
-                    playerData.setIp(result.get(6).toString());
-                    playerData.setFirstJoin(Long.parseLong(result.get(7).toString()));
-                    playerData.setCurrentServerName(result.get(8).toString());
-                    playerData.setVanish(Boolean.parseBoolean(result.get(9).toString()));
+                    callback.taskDone(
 
-                    callback.taskDone(playerData);
-                } );
+                            new PlayerData(result.get(5).toString(), name)
+                                    .setLanguage(Language.valueOf(result.get(0).toString()))
+                                    .setCurrentlyOnline(Boolean.parseBoolean(result.get(1).toString()))
+                                    .setLastTimeJoined(Long.parseLong(result.get(2).toString()))
+                                    .setLastTimeOnline(Long.parseLong(result.get(3).toString()))
+                                    .setOnlineTime(Long.parseLong(result.get(4).toString()))
+                                    .setIp(result.get(6).toString())
+                                    .setFirstJoin(Long.parseLong(result.get(7).toString()))
+                                    .setCurrentServerName(result.get(8).toString())
+                                    .setVanish(Boolean.parseBoolean(result.get(9).toString())));
+                });
 
     }
 
-    public void resetCurrentOnline() {
-        update("playerdata",
-                "currentlyOnline = false");
-    }
 }

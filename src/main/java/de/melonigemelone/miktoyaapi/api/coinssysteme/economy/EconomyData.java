@@ -1,5 +1,7 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.economy;
 
+import de.melonigemelone.miktoyaapi.MiktoyaAPI;
+
 public class EconomyData {
 
     private String uuid;
@@ -15,8 +17,9 @@ public class EconomyData {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public EconomyData setUuid(String uuid) {
         this.uuid = uuid;
+        return this;
     }
 
     public double getMoney() {
@@ -27,22 +30,26 @@ public class EconomyData {
         return this.money >= money;
     }
 
-    public void setMoney(double money) {
+    public EconomyData setMoney(double money) {
         this.money = money;
         update();
+        return this;
     }
 
-    public void addMoney(double money) {
+    public EconomyData addMoney(double money) {
         this.money = this.money + money;
         update();
+        return this;
     }
 
-    public void removeMoney(double money) {
+    public EconomyData removeMoney(double money) {
         this.money = this.money - money;
         update();
+        return this;
     }
 
-    public void update() {
-
+    public EconomyData update() {
+        MiktoyaAPI.getEconomyMySQL().update(this);
+        return this;
     }
 }

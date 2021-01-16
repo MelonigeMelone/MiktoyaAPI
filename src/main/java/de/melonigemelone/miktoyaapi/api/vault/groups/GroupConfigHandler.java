@@ -1,7 +1,7 @@
 package de.melonigemelone.miktoyaapi.api.vault.groups;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
-import de.melonigemelone.miktoyaapi.lib.configuration.yaml.YamlFileBuilder;
+import de.melonigemelone.miktoyaapi.repository.lib.configuration.yaml.YamlFileBuilder;
 
 public class GroupConfigHandler extends YamlFileBuilder {
 

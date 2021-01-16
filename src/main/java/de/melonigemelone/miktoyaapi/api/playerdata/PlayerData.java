@@ -29,85 +29,96 @@ public class PlayerData {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public PlayerData setUuid(String uuid) {
         this.uuid = uuid;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public PlayerData setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Language getLanguage() {
         return language;
     }
 
-    public void setLanguage(Language language) {
+    public PlayerData setLanguage(Language language) {
         this.language = language;
+        return this;
     }
 
     public boolean isCurrentlyOnline() {
         return currentlyOnline;
     }
 
-    public void setCurrentlyOnline(boolean currentlyOnline) {
+    public PlayerData setCurrentlyOnline(boolean currentlyOnline) {
         this.currentlyOnline = currentlyOnline;
+        return this;
     }
 
     public long getFirstJoin() {
         return firstJoin;
     }
 
-    public void setFirstJoin(long firstJoin) {
+    public PlayerData setFirstJoin(long firstJoin) {
         this.firstJoin = firstJoin;
+        return this;
     }
 
     public long getLastTimeJoined() {
         return lastTimeJoined;
     }
 
-    public void setLastTimeJoined(long lastTimeJoined) {
+    public PlayerData setLastTimeJoined(long lastTimeJoined) {
         this.lastTimeJoined = lastTimeJoined;
+        return this;
     }
 
     public long getLastTimeOnline() {
         return lastTimeOnline;
     }
 
-    public void setLastTimeOnline(long lastTimeOnline) {
+    public PlayerData setLastTimeOnline(long lastTimeOnline) {
         this.lastTimeOnline = lastTimeOnline;
+        return this;
     }
 
     public long getOnlineTime() {
         return onlineTime;
     }
 
-    public void setOnlineTime(long onlineTime) {
+    public PlayerData setOnlineTime(long onlineTime) {
         this.onlineTime = onlineTime;
+        return this;
     }
 
-    public void setIp(String ip) {
+    public PlayerData setIp(String ip) {
         this.ip = ip;
+        return this;
     }
 
     public String getIp() {
         return ip;
     }
 
-    public void setCurrentServerName(String currentServerName) {
+    public PlayerData setCurrentServerName(String currentServerName) {
         this.currentServerName = currentServerName;
+        return this;
     }
 
     public String getCurrentServerName() {
         return currentServerName;
     }
 
-    public void setVanish(boolean vanish) {
+    public PlayerData setVanish(boolean vanish) {
         this.vanish = vanish;
         MiktoyaAPI.getPlayerDataMySQL().updateVanish(this);
+        return this;
     }
 
     public boolean isVanish() {
