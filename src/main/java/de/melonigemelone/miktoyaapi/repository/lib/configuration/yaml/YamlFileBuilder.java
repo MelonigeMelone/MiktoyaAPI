@@ -38,6 +38,13 @@ public class YamlFileBuilder {
         }
     }
 
+    public void setIfNotExistsAndSave(String path, Object value) {
+        if(!this.cfg.contains(path)) {
+            this.cfg.set(path, value);
+            save();
+        }
+    }
+
     public YamlFileBuilder save() {
         try {
             this.cfg.save(this.file);

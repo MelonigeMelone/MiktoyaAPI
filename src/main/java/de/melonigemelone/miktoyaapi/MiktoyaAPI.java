@@ -4,6 +4,7 @@ import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsMySQL;
 import de.melonigemelone.miktoyaapi.api.coinssysteme.economy.EconomyImpl;
 import de.melonigemelone.miktoyaapi.api.coinssysteme.economy.EconomyMySQL;
 import de.melonigemelone.miktoyaapi.api.coinssysteme.rbx.RBXMySQL;
+import de.melonigemelone.miktoyaapi.api.languagesystem.MultiLanguageMessage;
 import de.melonigemelone.miktoyaapi.api.languagesystem.config.LanguageSystemEnglischConfigHandler;
 import de.melonigemelone.miktoyaapi.api.languagesystem.config.LanguageSystemGermanConfigHandler;
 import de.melonigemelone.miktoyaapi.api.languagesystem.LanguageSystemAPI;
@@ -16,6 +17,7 @@ import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLConfigHandler;
 import de.melonigemelone.miktoyaapi.tcpexploitfixer.TCPExploitFixer;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,40 +47,53 @@ public class MiktoyaAPI extends JavaPlugin {
     //Manager
     public static LanguageSystemGermanConfigHandler languageSystemGermanConfigHandler;
     public static LanguageSystemEnglischConfigHandler languageSystemEnglischConfigHandler;
+
+    public static LanguageSystemAPI languageSystemAPI;
     public static GroupConfigHandler groupConfigHandler;
 
     @Override
     public void onEnable() {
 
         instance = this;
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Miktoya");
-        this.getServer().getMessenger().registerIncomingPluginChannel(this, "Miktoya", new BungeeCommunicationListener());
 
-        bungeeCommunicationHandler = new BungeeCommunicationHandler();
+        if(detectPlugins()) {
 
-        versionChecker = new VersionChecker();
+            versionChecker = new VersionChecker();
 
-        System.out.println("Minecraft Server Version " + VersionChecker.bukkitVersion.name() + " erkannt!");
+            System.out.println("Minecraft Server Version " + VersionChecker.bukkitVersion.name() + " erkannt!");
 
-        setupEconomy();
-        setupPermissions();
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "Miktoya");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "Miktoya", new BungeeCommunicationListener());
 
-        mySQLConfigHandler = new MySQLConfigHandler();
+            bungeeCommunicationHandler = new BungeeCommunicationHandler();
 
-        playerDataMySQL = new PlayerDataMySQL();
-        coinsMySQL = new CoinsMySQL();
-        economyMySQL = new EconomyMySQL();
-        rbxMySQL = new RBXMySQL();
+            setupEconomy();
+            setupPermissions();
 
-        languageSystemGermanConfigHandler = new LanguageSystemGermanConfigHandler();
-        languageSystemEnglischConfigHandler = new LanguageSystemEnglischConfigHandler();
-        groupConfigHandler = new GroupConfigHandler();
+            mySQLConfigHandler = new MySQLConfigHandler();
 
-        initCommands();
-        initListener();
-        initDefaultMessages();
+            playerDataMySQL = new PlayerDataMySQL();
+            coinsMySQL = new CoinsMySQL();
+            economyMySQL = new EconomyMySQL();
+            rbxMySQL = new RBXMySQL();
 
-        TCPExploitFixer.init();
+            languageSystemGermanConfigHandler = new LanguageSystemGermanConfigHandler();
+            languageSystemEnglischConfigHandler = new LanguageSystemEnglischConfigHandler();
+            languageSystemAPI = new LanguageSystemAPI();
+
+
+            groupConfigHandler = new GroupConfigHandler();
+
+            initCommands();
+            initListener();
+
+            TCPExploitFixer.init();
+
+        } else {
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+
 
     }
 
@@ -95,15 +110,25 @@ public class MiktoyaAPI extends JavaPlugin {
 
     }
 
-    public void initDefaultMessages() {
-        LanguageSystemAPI.addMessage("MiktoyaAPI.Prefix", "&8[&eMiktoya&8]", "&8[&eMiktoya&8]");
-        LanguageSystemAPI.addMessage("MiktoyaAPI.Only_Players", "&8[&eMiktoya&8] &cDer Befehl ist nur für Spieler!", "&8[&eMiktoya&8] &cDer Befehl ist nur für Spieler!");
-
-        LanguageSystemAPI.addMessage("MiktoyaAPI.No_Perm", "&8[&eMiktoya&8] &cDazu hast du keine Rechte!", "&8[&eMiktoya&8] &cNo permissions!");
-        LanguageSystemAPI.addMessage("MiktoyaAPI.No_Player_Found", "&8[&eMiktoya&8] &cEs wurde kein Spieler mit diesem Namen gefunden!", "&8[&eMiktoya&8] &cNo player with such a name was found!");
-        LanguageSystemAPI.addMessage("MiktoyaAPI.Use_Cmd", "&8[&eMiktoya&8] &cNutze: &7%command%", "&8[&eMiktoya&8] &cUse: &7%command%");
-
+    public static boolean detectPlugins() {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null) {
+                if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+                    return true;
+                } else {
+                    System.out.println("Das Plugin Vault fehlt! MiktoyaAPI wird deaktiviert!");
+                    return false;
+                }
+            } else {
+                System.out.println("Das Plugin LuckPerms fehlt! MiktoyaAPI wird deaktiviert!");
+                return false;
+            }
+        } else {
+            System.out.println("Das Plugin PlaceHolderAPI fehlt! MiktoyaAPI wird deaktiviert!");
+            return false;
+        }
     }
+
 
     private void setupEconomy() {
         economy = new EconomyImpl();
@@ -153,5 +178,9 @@ public class MiktoyaAPI extends JavaPlugin {
 
     public static LanguageSystemEnglischConfigHandler getLanguageSystemEnglischConfigHandler() {
         return languageSystemEnglischConfigHandler;
+    }
+
+    public static LanguageSystemAPI getLanguageSystemAPI() {
+        return languageSystemAPI;
     }
 }
