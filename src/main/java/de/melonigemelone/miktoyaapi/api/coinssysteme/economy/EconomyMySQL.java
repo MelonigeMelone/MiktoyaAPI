@@ -1,7 +1,8 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.economy;
 
-import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
 import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
+import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
 
 import java.util.List;
 
@@ -43,7 +44,20 @@ public class EconomyMySQL extends MySQL {
     }
 
     //Get CoinsData
-    public EconomyData get(String uuid) {
+    public void get(String uuid, Callback<EconomyData> callback) {
+
+        get("economy",
+                "uuid = '" + uuid + "'",
+                new String[]{"money"}, result -> {
+
+                    double money = Double.parseDouble(result.get(0).toString());
+                    callback.taskDone(new EconomyData(uuid, money));
+                });
+
+    }
+
+    //Get CoinsData
+    public EconomyData getSync(String uuid) {
 
         List<Object> result = getSync("economy",
                 "uuid = '" + uuid + "'",

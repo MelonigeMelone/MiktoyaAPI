@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.time.temporal.TemporalAmount;
 import java.util.concurrent.TimeUnit;
 
 public class LuckPermsAPI {

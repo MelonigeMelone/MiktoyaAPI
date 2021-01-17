@@ -1,10 +1,6 @@
 package de.melonigemelone.miktoyaapi.api.languagesystem;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
-import de.melonigemelone.miktoyaapi.api.playerdata.PlayerDataAPI;
-import org.bukkit.entity.Player;
-
-import java.util.HashMap;
 
 /**
  * Dient dazu Messages dem LanguageSystem hinzuzufügen und zu getten
@@ -15,15 +11,12 @@ import java.util.HashMap;
  */
 
 public class LanguageSystemAPI {
+
     public static MultiLanguageMessage prefix;
     public static MultiLanguageMessage onlyPlayers;
     public static MultiLanguageMessage noPerm;
     public static MultiLanguageMessage noPlayerFound;
     public static MultiLanguageMessage useCmd;
-
-
-
-
 
     public LanguageSystemAPI() {
         initDefaultMessages();
@@ -47,6 +40,7 @@ public class LanguageSystemAPI {
         prefix = new MultiLanguageMessage("MiktoyaAPI.Prefix",
                 "&8[&eMiktoya&8] ",
                 "&8[&eMiktoya&8] ");
+
 
         onlyPlayers = new MultiLanguageMessage("MiktoyaAPI.Only_Players",
                 "&cDer Befehl ist nur für Spieler!",

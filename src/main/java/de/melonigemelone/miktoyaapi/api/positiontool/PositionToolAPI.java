@@ -2,7 +2,6 @@ package de.melonigemelone.miktoyaapi.api.positiontool;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.HashMap;
 

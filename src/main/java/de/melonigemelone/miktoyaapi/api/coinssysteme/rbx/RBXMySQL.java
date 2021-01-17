@@ -1,12 +1,10 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.rbx;
 
-import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsData;
+import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
 import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
 import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
-import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
 
 import java.util.List;
-import java.util.concurrent.Future;
 
 public class RBXMySQL extends MySQL {
 

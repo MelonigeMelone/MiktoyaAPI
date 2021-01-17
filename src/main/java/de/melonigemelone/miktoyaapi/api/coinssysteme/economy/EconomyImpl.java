@@ -63,7 +63,11 @@ public class EconomyImpl implements Economy {
     }
 
     public double getBalance(OfflinePlayer offlinePlayer) {
-        return EconomyAPI.getEconomyData(offlinePlayer.getUniqueId().toString()).getMoney();
+        if(offlinePlayer.isOnline()) {
+            return EconomyAPI.getEconomyDataFromOnlinePlayer(offlinePlayer.getUniqueId().toString()).getMoney();
+        }
+        return EconomyAPI.getEconomyDataFromOfflinePlayerSync(offlinePlayer.getUniqueId().toString()).getMoney();
+
     }
 
     public double getBalance(String s, String s1) {
@@ -95,7 +99,14 @@ public class EconomyImpl implements Economy {
     }
 
     public EconomyResponse withdrawPlayer(OfflinePlayer offlinePlayer, double v) {
-        EconomyData economyData = EconomyAPI.getEconomyData(offlinePlayer.getUniqueId().toString());
+        EconomyData economyData;
+
+        if(offlinePlayer.isOnline()) {
+            economyData = EconomyAPI.getEconomyDataFromOnlinePlayer(offlinePlayer.getUniqueId().toString());
+        } else {
+            economyData = EconomyAPI.getEconomyDataFromOfflinePlayerSync(offlinePlayer.getUniqueId().toString());
+        }
+
         economyData.removeMoney(v);
         return new EconomyResponse(v, economyData.getMoney(), EconomyResponse.ResponseType.SUCCESS, "");
     }
@@ -121,7 +132,13 @@ public class EconomyImpl implements Economy {
 
     public EconomyResponse depositPlayer(OfflinePlayer offlinePlayer, double v) {
         if(offlinePlayer != null && offlinePlayer.getUniqueId() != null){
-            EconomyData economyData = EconomyAPI.getEconomyData(offlinePlayer.getUniqueId().toString());
+            EconomyData economyData;
+
+            if(offlinePlayer.isOnline()) {
+                economyData = EconomyAPI.getEconomyDataFromOnlinePlayer(offlinePlayer.getUniqueId().toString());
+            } else {
+                economyData = EconomyAPI.getEconomyDataFromOfflinePlayerSync(offlinePlayer.getUniqueId().toString());
+            }
             economyData.addMoney(v);
             return new EconomyResponse(v,economyData.getMoney(), EconomyResponse.ResponseType.SUCCESS,"");
         }
