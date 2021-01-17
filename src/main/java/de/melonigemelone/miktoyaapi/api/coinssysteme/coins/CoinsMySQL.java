@@ -4,6 +4,8 @@ import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
 import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
 import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
 
+import java.util.List;
+
 public class CoinsMySQL extends MySQL {
 
     //Connect with Database and create tables
@@ -51,6 +53,18 @@ public class CoinsMySQL extends MySQL {
 
                     callback.taskDone(new CoinsData(uuid, coins));
                 });
+    }
+
+    //Get CoinsData
+    public CoinsData getSync(String uuid) {
+        List<Object> result =  getSync("coins",
+                "uuid = '" + uuid + "'",
+                new String[]{"coins"});
+
+        double coins = Double.parseDouble(result.get(0).toString());
+
+        return new CoinsData(uuid, coins);
+
     }
 
 

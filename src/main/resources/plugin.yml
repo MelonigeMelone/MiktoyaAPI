@@ -3,4 +3,4 @@ version: 1.0
 author: MelonigeMelone
 main: de.melonigemelone.miktoyaapi.MiktoyaAPI
 
-depend: [Vault]
+depend: [Vault,LuckPerms,PlaceholderAPI]

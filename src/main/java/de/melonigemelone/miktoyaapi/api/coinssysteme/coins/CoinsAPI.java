@@ -8,4 +8,8 @@ public class CoinsAPI {
     public static void getCoinsData(String uuid, Callback<CoinsData> callback) {
         MiktoyaAPI.getCoinsMySQL().get(uuid, callback);
     }
+
+    public static CoinsData getCoinsDataSync(String uuid) {
+        return MiktoyaAPI.getCoinsMySQL().getSync(uuid);
+    }
 }

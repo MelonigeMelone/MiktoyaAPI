@@ -1,8 +1,12 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.rbx;
 
+import de.melonigemelone.miktoyaapi.api.coinssysteme.coins.CoinsData;
 import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.Callback;
 import de.melonigemelone.miktoyaapi.repository.lib.database.mysql.MySQL;
 import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLValues;
+
+import java.util.List;
+import java.util.concurrent.Future;
 
 public class RBXMySQL extends MySQL {
 
@@ -44,7 +48,7 @@ public class RBXMySQL extends MySQL {
     //Get CoinsData
     public void get(String uuid, Callback<RBXData> callback) {
 
-        get("rrbxtx",
+        get("rbx",
                 "uuid = '" + uuid + "'",
                 new String[]{"rbx"}, result -> {
 
@@ -54,4 +58,19 @@ public class RBXMySQL extends MySQL {
                 });
 
     }
+
+    //Get CoinsData
+    public RBXData getSync(String uuid) {
+
+        List<Object> result = getSync("rbx",
+                "uuid = '" + uuid + "'",
+                new String[]{"rbx"});
+
+        double rbx = Double.parseDouble(result.get(0).toString());
+
+        return new RBXData(uuid, rbx);
+
+
+    }
+
 }
