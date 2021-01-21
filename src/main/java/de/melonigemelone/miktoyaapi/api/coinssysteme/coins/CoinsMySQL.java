@@ -35,6 +35,18 @@ public class CoinsMySQL extends MySQL {
 
     }
 
+    //Create new Player in DB
+    public void createPlayerIfNotExists(String uuid) {
+        existsPlayer(uuid, result ->  {
+            if(!result) {
+                insertData("coins",
+                        "uuid, coins",
+                        "'" + uuid + "', 0");
+            }
+        });
+
+    }
+
 
     //Update CoinsData
     public void update(CoinsData coinsData) {

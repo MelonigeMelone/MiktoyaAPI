@@ -13,11 +13,11 @@ public class YamlFileBuilder {
 
     private File file;
 
-    private FileConfiguration cfg;
+    private YamlConfiguration cfg;
 
     public YamlFileBuilder(String path, String file) {
         this.file = new File(path, file);
-        this.cfg = (FileConfiguration) YamlConfiguration.loadConfiguration(this.file);
+        this.cfg = YamlConfiguration.loadConfiguration(this.file);
     }
 
     public void addDefault(String path, Object value) {

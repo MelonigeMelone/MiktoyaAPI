@@ -1,6 +1,9 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.coins;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
+import de.melonigemelone.miktoyaapi.api.scoreboard.ScoreBoardAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class CoinsData {
 
@@ -50,6 +53,11 @@ public class CoinsData {
 
     public CoinsData update() {
         MiktoyaAPI.getCoinsMySQL().update(this);
+
+        Player p = Bukkit.getPlayerExact(uuid);
+        if(p != null) {
+            ScoreBoardAPI.updateScoreBoard(p);
+        }
         return this;
     }
 }

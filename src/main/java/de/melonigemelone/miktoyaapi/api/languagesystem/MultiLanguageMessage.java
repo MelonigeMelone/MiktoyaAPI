@@ -2,6 +2,8 @@ package de.melonigemelone.miktoyaapi.api.languagesystem;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
 import de.melonigemelone.miktoyaapi.api.playerdata.PlayerData;
+import de.melonigemelone.miktoyaapi.api.playerdata.PlayerDataAPI;
+import org.bukkit.entity.Player;
 
 public class MultiLanguageMessage {
 
@@ -41,10 +43,19 @@ public class MultiLanguageMessage {
         this.germanMessage = germanMessage;
     }
 
+    public String getMessage(Player p, boolean replaceColorCodes) {
+        PlayerData playerData = PlayerDataAPI.getPlayerDataFromUUIDFromOlinePlayers(p.getUniqueId().toString());
+        return getMessage(playerData, replaceColorCodes);
+    }
+
     public String getMessage(PlayerData playerData, boolean replaceColorCodes) {
+       return getMessage(playerData.getLanguage(), replaceColorCodes);
+    }
+
+    public String getMessage(Language language, boolean replaceColorCodes) {
         String message = germanMessage;
 
-        if(playerData.getLanguage().equals(Language.ENGLISCH)) {
+        if(language.equals(Language.ENGLISCH)) {
             message =  englischMessage;
         }
 

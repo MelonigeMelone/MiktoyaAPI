@@ -1,5 +1,9 @@
 package de.melonigemelone.miktoyaapi.api.vault.groups;
 
+import de.melonigemelone.miktoyaapi.MiktoyaAPI;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
+
 public class Group {
 
     private String name;
@@ -16,6 +20,8 @@ public class Group {
 
     private String sbName;
 
+    private Team team;
+
     public Group(String name, String chatPrefix, String chatSuffix, String[] chatNameColors, String chatFormat, String tabPrefix, String tabSuffix, String[] tabNameColors, String tabRank, String sbName) {
         this.name = name;
         this.chatPrefix = chatPrefix;
@@ -27,6 +33,7 @@ public class Group {
         this.tabNameColors = tabNameColors;
         this.tabRank = tabRank;
         this.sbName = sbName;
+        this.team = MiktoyaAPI.getScoreBoardHandler().registerTeam(this);
     }
 
     public String getName() {
@@ -107,5 +114,11 @@ public class Group {
 
     public void setSbName(String sbName) {
         this.sbName = sbName;
+    }
+
+    public void addPlayerToTeam(Player p) {
+        if(!this.team.hasPlayer(p)) {
+            this.team.addPlayer(p);
+        }
     }
 }

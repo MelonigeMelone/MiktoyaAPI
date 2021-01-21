@@ -48,12 +48,19 @@ public class PlayerDataMySQL extends MySQL {
                 "uuid = '" + playerData.getUuid() + "'");
     }
 
+    //Update PlayerData Entry
+    public void updateSelectedLanguage(PlayerData playerData) {
+        update("playerdata",
+                "selectedLanguage = " + playerData.isSelectedLanguage(),
+                "uuid = '" + playerData.getUuid() + "'");
+    }
+
     //Load PlayerData From DataBase with only the UUID
     public void getDataFromUUID(String uuid, Callback<PlayerData> callback) {
 
         get("playerdata",
                 "uuid = '" + uuid + "'",
-                new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "name", "ip", "firstJoin", "currentServerName", "vanish"}, result -> {
+                new String[]{"language", "currentlyOnline", "lastTimeJoined", "lastTimeOnline", "onlineTime", "name", "ip", "firstJoin", "currentServerName", "vanish", "selectedLanguage"}, result -> {
                     callback.taskDone(
 
                             new PlayerData(uuid, result.get(5).toString())
@@ -65,7 +72,9 @@ public class PlayerDataMySQL extends MySQL {
                                     .setIp(result.get(6).toString())
                                     .setFirstJoin(Long.parseLong(result.get(7).toString()))
                                     .setCurrentServerName(result.get(8).toString())
-                                    .setVanish(Boolean.parseBoolean(result.get(9).toString())));
+                                    .setVanish(Boolean.parseBoolean(result.get(9).toString()))
+                                    .setSelectedLanguage(Boolean.parseBoolean(result.get(10).toString())));
+
 
                 });
 

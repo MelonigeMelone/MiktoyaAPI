@@ -35,6 +35,16 @@ public class EconomyMySQL extends MySQL {
 
     }
 
+    //Create new Player in DB
+    public void createPlayerIfNotExists(String uuid) {
+        if(!existsPlayer(uuid)) {
+            insertData("economy",
+                    "uuid, money",
+                    "'" + uuid + "', 0");
+        }
+
+    }
+
 
     //Update CoinsData
     public void update(EconomyData economyData) {

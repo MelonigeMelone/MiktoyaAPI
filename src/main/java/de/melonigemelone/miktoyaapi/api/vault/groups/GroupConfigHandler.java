@@ -18,7 +18,7 @@ public class GroupConfigHandler extends YamlFileBuilder {
             setIfNotExists("GROUP." + group + ".Chat.Prefix", "&e" + group + " ");
             setIfNotExists("GROUP." + group + ".Chat.Suffix", "");
             setIfNotExists("GROUP." + group + ".Chat.NameColors", "&7");
-            setIfNotExists("GROUP." + group + ".Chat.Format", "%displayname% &8&l>> &7%message%");
+            setIfNotExists("GROUP." + group + ".Chat.Format", "%displayname% &8&l-> &7%message%");
 
             setIfNotExists("GROUP." + group + ".Tab.Prefix", "&e" + group + " &7");
             setIfNotExists("GROUP." + group + ".Tab.Suffix", "");

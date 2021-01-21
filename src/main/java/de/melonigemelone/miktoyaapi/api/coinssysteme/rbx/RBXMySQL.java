@@ -35,6 +35,18 @@ public class RBXMySQL extends MySQL {
 
     }
 
+    //Create new Player in DB
+    public void createPlayerIfNotExists(String uuid) {
+        existsPlayer(uuid, result ->  {
+            if(!result) {
+                insertData("rbx",
+                        "uuid, rbx",
+                        "'" + uuid + "', 0");
+            }
+        });
+
+    }
+
 
     //Update CoinsData
     public void update(RBXData rbxData) {

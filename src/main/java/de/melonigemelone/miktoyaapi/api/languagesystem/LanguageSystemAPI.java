@@ -19,7 +19,6 @@ public class LanguageSystemAPI {
     public static MultiLanguageMessage useCmd;
 
     public LanguageSystemAPI() {
-        initDefaultMessages();
     }
 
 
@@ -60,4 +59,23 @@ public class LanguageSystemAPI {
 
     }
 
+    public static MultiLanguageMessage getNoPerm() {
+        return noPerm;
+    }
+
+    public static MultiLanguageMessage getNoPlayerFound() {
+        return noPlayerFound;
+    }
+
+    public static MultiLanguageMessage getOnlyPlayers() {
+        return onlyPlayers;
+    }
+
+    public static MultiLanguageMessage getPrefix() {
+        return prefix;
+    }
+
+    public static MultiLanguageMessage getUseCmd() {
+        return useCmd;
+    }
 }

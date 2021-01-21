@@ -2,6 +2,8 @@ package de.melonigemelone.miktoyaapi.bungeecommunication;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
 import de.melonigemelone.miktoyaapi.api.languagesystem.Language;
+import de.melonigemelone.miktoyaapi.api.playerdata.PlayerData;
+import de.melonigemelone.miktoyaapi.api.playerdata.PlayerDataAPI;
 import de.melonigemelone.miktoyaapi.events.PlayerChangeLanguageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,7 +40,9 @@ public class BungeeCommunicationHandler {
             String language = split[1];
 
             Player p = Bukkit.getPlayer(UUID.fromString(uuid));
+            PlayerData playerData = PlayerDataAPI.getPlayerDataFromUUIDFromOlinePlayers(uuid);
             Language l = Language.valueOf(language);
+            playerData.setLanguage(l);
 
             if(p != null && l != null) {
                 PlayerChangeLanguageEvent playerChangeLanguageEvent = new PlayerChangeLanguageEvent(p, l);

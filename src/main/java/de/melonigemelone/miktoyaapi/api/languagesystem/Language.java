@@ -9,6 +9,4 @@ package de.melonigemelone.miktoyaapi.api.languagesystem;
 
 public enum Language {
     GERMAN, ENGLISCH;
-
-
 }

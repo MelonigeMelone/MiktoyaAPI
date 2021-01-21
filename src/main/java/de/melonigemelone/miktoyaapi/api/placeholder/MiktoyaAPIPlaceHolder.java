@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 //TODO Add PlaceHolders
 
-public class MiktoyaPlaceHolder extends PlaceholderExpansion {
+public class MiktoyaAPIPlaceHolder extends PlaceholderExpansion {
 
     /*
     The identifier, shouldn't contain any _ or %

@@ -3,15 +3,18 @@ package de.melonigemelone.miktoyaapi.api.playerdata;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
 import de.melonigemelone.miktoyaapi.api.languagesystem.Language;
+import org.bukkit.entity.Player;
 
 public class PlayerData {
 
     private String uuid;
     private String name;
+    private Player player;
     private String ip;
     private String currentServerName;
 
     private Language language;
+    private boolean selectedLanguage;
     private boolean vanish;
 
     private boolean currentlyOnline;
@@ -41,6 +44,14 @@ public class PlayerData {
     public PlayerData setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public Language getLanguage() {
@@ -123,5 +134,15 @@ public class PlayerData {
 
     public boolean isVanish() {
         return vanish;
+    }
+
+    public boolean isSelectedLanguage() {
+        return selectedLanguage;
+    }
+
+    public PlayerData setSelectedLanguage(boolean selectedLanguage) {
+        this.selectedLanguage = selectedLanguage;
+        MiktoyaAPI.getPlayerDataMySQL().updateSelectedLanguage(this);
+        return this;
     }
 }

@@ -1,6 +1,9 @@
 package de.melonigemelone.miktoyaapi.api.coinssysteme.economy;
 
 import de.melonigemelone.miktoyaapi.MiktoyaAPI;
+import de.melonigemelone.miktoyaapi.api.scoreboard.ScoreBoardAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class EconomyData {
 
@@ -50,6 +53,11 @@ public class EconomyData {
 
     public EconomyData update() {
         MiktoyaAPI.getEconomyMySQL().update(this);
+
+        Player p = Bukkit.getPlayerExact(uuid);
+        if(p != null) {
+            ScoreBoardAPI.updateScoreBoard(p);
+        }
         return this;
     }
 }

@@ -11,9 +11,10 @@ import de.melonigemelone.miktoyaapi.api.playerdata.PlayerDataMySQL;
 import de.melonigemelone.miktoyaapi.api.vault.groups.GroupConfigHandler;
 import de.melonigemelone.miktoyaapi.bungeecommunication.BungeeCommunicationHandler;
 import de.melonigemelone.miktoyaapi.bungeecommunication.BungeeCommunicationListener;
+import de.melonigemelone.miktoyaapi.api.scoreboard.ScoreBoardAPI;
 import de.melonigemelone.miktoyaapi.repository.config.mysql.MySQLConfigHandler;
 import de.melonigemelone.miktoyaapi.repository.lib.packets.VersionChecker;
-import de.melonigemelone.miktoyaapi.tcpexploitfixer.TCPExploitFixer;
+import de.melonigemelone.miktoyaapi.api.tcpexploitfixer.mysql.TCPExploitFixerMySQL;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -38,6 +39,7 @@ public class MiktoyaAPI extends JavaPlugin {
     public static MySQLConfigHandler mySQLConfigHandler;
 
     //MySQL-Manager
+    public static TCPExploitFixerMySQL tcpExploitFixerMySQL;
     public static PlayerDataMySQL playerDataMySQL;
     public static CoinsMySQL coinsMySQL;
     public static EconomyMySQL economyMySQL;
@@ -49,6 +51,7 @@ public class MiktoyaAPI extends JavaPlugin {
 
     public static LanguageSystemAPI languageSystemAPI;
     public static GroupConfigHandler groupConfigHandler;
+    public static ScoreBoardAPI scoreBoardHandler;
 
     @Override
     public void onEnable() {
@@ -71,6 +74,7 @@ public class MiktoyaAPI extends JavaPlugin {
 
             mySQLConfigHandler = new MySQLConfigHandler();
 
+            tcpExploitFixerMySQL = new TCPExploitFixerMySQL();
             playerDataMySQL = new PlayerDataMySQL();
             coinsMySQL = new CoinsMySQL();
             economyMySQL = new EconomyMySQL();
@@ -80,13 +84,15 @@ public class MiktoyaAPI extends JavaPlugin {
             languageSystemEnglischConfigHandler = new LanguageSystemEnglischConfigHandler();
             languageSystemAPI = new LanguageSystemAPI();
 
+            scoreBoardHandler = new ScoreBoardAPI();
 
             groupConfigHandler = new GroupConfigHandler();
 
             initCommands();
             initListener();
 
-            TCPExploitFixer.init();
+            languageSystemAPI.initDefaultMessages();
+
 
         } else {
             Bukkit.getPluginManager().disablePlugin(this);
@@ -106,7 +112,6 @@ public class MiktoyaAPI extends JavaPlugin {
     }
 
     public void initListener() {
-
     }
 
     public static boolean detectPlugins() {
@@ -155,6 +160,10 @@ public class MiktoyaAPI extends JavaPlugin {
         return mySQLConfigHandler;
     }
 
+    public static TCPExploitFixerMySQL getTcpExploitFixerMySQL() {
+        return tcpExploitFixerMySQL;
+    }
+
     public static PlayerDataMySQL getPlayerDataMySQL() {
         return playerDataMySQL;
     }
@@ -181,5 +190,9 @@ public class MiktoyaAPI extends JavaPlugin {
 
     public static LanguageSystemAPI getLanguageSystemAPI() {
         return languageSystemAPI;
+    }
+
+    public static ScoreBoardAPI getScoreBoardHandler() {
+        return scoreBoardHandler;
     }
 }
